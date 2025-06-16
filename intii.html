@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lembaga Donasi Kita - Beranda</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* Variabel Warna Pastel */
+        :root {
+            --pastel-primary: hsl(120, 72%, 87%) ; /* Biru Pastel */
+            --pastel-text: #fff58a; /* Abu-abu Kebiruan Pastel */
+            --pastel-secondary:#2f382d ; /* Ungu Muda Pastel */
+            --pastel-accent: #aaf09a ; /* Oranye Muda Pastel */
+            --pastel-light: #4b7471; /* Kuning Muda Pastel */
+            --pastel-dark: #2f382d; /* Cokelat Pastel */
+            --pastel-text: #2f382d; /* Abu-abu Kebiruan Pastel */
+            --pastel-border: #f0dbf2; /* Merah Muda Muda Pastel */
+        }
+
+        /* General Body & Typography */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--pastel-text);
+            line-height: 1.7;
+            background-color: var(--pastel-light);
+            scroll-behavior: smooth; /* Smooth scroll untuk anchor links */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--pastel-dark);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--pastel-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--pastel-primary);
+            text-decoration: underline;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background-color: var(--pastel-primary);
+            border-color: var(--pastel-primary);
+            color: var(--pastel-dark); /* Teks tombol */
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #80cbc4; /* Sedikit lebih gelap */
+            border-color: #80cbc4;
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        /* Animasi Loading */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.98); /* Lebih solid, mendekati putih */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1050;
+            opacity: 1; /* Mulai dengan opacity penuh */
+            visibility: visible;
+            transition: opacity 0.7s ease-out, visibility 0.7s ease-out; /* Transisi lebih panjang */
+        }
+
+        #loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none; /* Nonaktifkan interaksi mouse setelah hilang */
+        }
+
+        .spinner-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .spinner-logo {
+            font-size: 3rem; /* Ukuran ikon */
+            color: var(--pastel-primary);
+            margin-bottom: 15px;
+            animation: pulse 1.5s infinite ease-in-out; /* Animasi berdenyut */
+        }
+
+        .spinner-border-custom {
+            width: 4rem; /* Ukuran spinner lebih besar */
+            height: 4rem;
+            border: 0.4em solid currentColor; /* Ketebalan border */
+            border-right-color: transparent; /* Membuat efek berputar */
+            border-radius: 50%;
+            animation: spinner-border 0.75s linear infinite; /* Animasi putar standar Bootstrap */
+            color: var(--pastel-primary); /* Warna spinner */
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--pastel-light) !important; /* Warna navbar */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); /* Shadow halus */
+            padding: 0.8rem 0;
+        }
+
+        .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--pastel-primary) !important;
+            margin-right: 2rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--pastel-text) !important;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--pastel-primary) !important;
+        }
+
+        .navbar-nav .nav-link.active {
+            color: var(--pastel-primary) !important;
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            background-color: var(--pastel-primary);
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Main Content Padding */
+        main.pt-5 {
+            padding-top: 80px !important; /* Sesuaikan dengan tinggi navbar */
+        }
+
+        /* Header/Hero Section (Slider) */
+        #beranda {
+           background: linear-gradient(135deg, var(--pastel-primary) 0%, var(--pastel-secondary) 100%); /* Gradien Pastel */
+            padding: 8rem 0 6rem 0;
+            color: white; /* Teks lebih gelap agar kontras */
+            text-align: center;
+            margin-top: 0 !important; /* Override default margin-top */
+        }
+
+        #beranda h1 {
+            color: var(--pastel-dark);
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .carousel-item img {
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            object-fit: cover; /* Pastikan gambar mengisi area */
+            height: 450px; /* Tinggi gambar slider */
+        }
+
+        .carousel-caption {
+            background-color: rgba(255, 255, 255, 0.7); /* Latar belakang semi-transparan putih */
+            color: var(--pastel-dark); /* Teks lebih gelap untuk kontras */
+            border-radius: 8px;
+            padding: 1rem;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 5%;
+            opacity: 0.7;
+        }
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: var(--pastel-primary);
+            border-radius: 50%;
+            padding: 1.5rem;
+        }
+
+
+        /* Section Styling */
+        section {
+            padding: 4rem 0;
+            background-color: var(--pastel-light); /* Latar belakang pastel */
+            border-bottom: 1px solid var(--pastel-border);
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        section h1, section h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            position: relative;
+            padding-bottom: 1rem;
+            color: var(--pastel-dark); /* Warna judul pastel */
+        }
+
+        section h1::after, section h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--pastel-primary); /* Garis bawah pastel */
+            border-radius: 2px;
+        }
+
+        /* Product Card dengan Efek Hover */
+        .product-card {
+            border: 1px solid var(--pastel-border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            background-color: white; /* Latar belakang putih untuk kartu */
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px); /* Lebih jauh */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); /* Shadow lebih kuat */
+        }
+
+        .product-card img {
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            height: 200px; /* Tinggi gambar card */
+            object-fit: cover;
+        }
+
+        .product-card .card-body {
+            padding: 1.5rem;
+            position: relative;
+            padding-bottom: 5rem; /* Ruang lebih untuk detail */
+            height: 250px; /* Tinggi tetap untuk body card */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-card .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--pastel-primary);
+        }
+
+        .product-card .card-text {
+            font-size: 0.95rem;
+            color: var(--pastel-text);
+        }
+
+        .product-card .product-detail {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--pastel-primary); /* Latar belakang detail */
+            color: var(--pastel-dark); /* Warna teks detail */
+            padding: 1.2rem;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.4s ease; /* Transisi pegas */
+            opacity: 0;
+            visibility: hidden;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card:hover .product-detail {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .product-detail p {
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .product-detail .btn {
+            background-color: var(--pastel-accent); /* Tombol warna aksen */
+            border-color: var(--pastel-accent);
+            color: var(--pastel-dark); /* Warna teks tombol */
+        }
+
+        .product-detail .btn:hover {
+            background-color: #dfffbc; /* Sedikit lebih gelap */
+            border-color: #dfffbc;
+        }
+
+
+        /* About Section */
+        #tentang-kami {
+            background-color: var(--pastel-light);
+            padding: 5rem 0;
+        }
+
+        #tentang-kami p {
+            font-size: 1.1rem;
+            text-align: justify;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Programs Section (Table) */
+        #program {
+            background-color: var(--pastel-light);
+            padding: 5rem 0;
+        }
+
+        .table {
+            border-radius: 8px;
+            overflow: hidden; /* Penting untuk border-radius pada tabel */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .table thead th {
+            background-color: var(--pastel-primary);
+            color: var(--pastel-dark);
+            font-weight: 600;
+            padding: 1rem;
+            vertical-align: middle;
+        }
+
+        .table tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(178, 223, 219, 0.2); /* Menggunakan nilai RGB dari pastel-primary */
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+            padding: 1rem;
+        }
+
+        #donasi, #kontak {
+            background-color: var(--pastel-light);
+            padding: 5rem 0;
+        }
+
+        #donasi form, #kontak form {
+            background-color: white; 
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--pastel-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--pastel-border);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--pastel-primary);
+            box-shadow: 0 0 0 0.25rem rgba(178, 223, 219, 0.25); 
+        }
+
+        .invalid-feedback {
+            font-size: 0.85rem;
+            color: #dc3545;
+            margin-top: 0.5rem;
+        }
+
+        .form-control.is-invalid {
+            border-color: #90797f;
+        }
+        .form-control.is-valid {
+            border-color: var(--pastel-accent);
+        }
+
+
+        footer {
+            background-color: var(--pastel-dark) !important; 
+            color: var(--pastel-light);
+            text-align: center;
+            padding: 2rem 0;
+            font-size: 0.9rem;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">
+        <div class="spinner-container">
+            <i class="fas fa-hand-holding-heart spinner-logo"></i>
+            <div class="spinner-border-custom" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#beranda">
+                <i class="fas fa-hand-holding-heart me-2"></i>Kami Peduli
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#beranda">Beranda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tentang-kami">Tentang Kami</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#program">Program</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#donasi">Donasi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#kontak">Kontak</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-5">
+        <section id="beranda" class="container-fluid">
+            <h1 class="mb-5">Selamat Datang di Kami Peduli</h1>
+            <div id="imageSlider" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="c:\Users\user\Downloads\bersatu bergerak.jfif" class="d-block w-100" alt="Bantu Sesama">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Bantu Mereka yang Membutuhkan</h5>
+                            <p>Mari bersama-sama menciptakan perubahan positif melalui donasi Anda.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="c:\Users\user\Downloads\harapan baru.jpg" class="d-block w-100" alt="Harapan Baru">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Edukasi untuk Masa Depan</h5>
+                            <p>Dukungan Anda sangat berarti untuk generasi penerus bangsa.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="c:\Users\user\Downloads\bantuan-air-bersih-pwi.jpg" class="d-block w-100" alt="Bersatu Bergerak">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Air Bersih untuk Semua</h5>
+                            <p>Setiap tetes air bersih adalah harapan bagi komunitas terpencil.</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#imageSlider" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#imageSlider" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </section>
+
+        <section class="container">
+            <h2 class="mb-5">Program Unggulan Kami</h2>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 justify-content-center">
+                <div class="col">
+                    <div class="card product-card">
+                        <img src="c:\Users\user\Downloads\pendidikan.webp" class="card-img-top" alt="Program Pendidikan">
+                        <div class="card-body">
+                            <h5 class="card-title">Donasi Pendidikan</h5>
+                            <p class="card-text">Dukungan untuk pendidikan anak-anak kurang mampu, membuka gerbang masa depan.</p>
+                            <div class="product-detail">
+                                <p><strong>Deskripsi Lebih Lanjut:</strong> Donasi ini akan digunakan untuk beasiswa, penyediaan buku, alat tulis, dan perbaikan fasilitas belajar di daerah terpencil.</p>
+                                <a href="#donasi" class="btn btn-sm">Donasi Sekarang <i class="fas fa-arrow-right ms-2"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card product-card">
+                        <img src="c:\Users\user\Downloads\kesehatan.jpg" class="card-img-top" alt="Program Kesehatan">
+                        <div class="card-body">
+                            <h5 class="card-title">Donasi Kesehatan</h5>
+                            <p class="card-text">Membantu penyediaan layanan kesehatan gratis bagi mereka yang membutuhkan.</p>
+                            <div class="product-detail">
+                                <p><strong>Deskripsi Lebih Lanjut:</strong> Dana digunakan untuk pengadaan obat-obatan esensial, pemeriksaan kesehatan gratis, dan bantuan operasi darurat.</p>
+                                <a href="#donasi" class="btn btn-sm">Donasi Sekarang <i class="fas fa-arrow-right ms-2"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card product-card">
+                        <img src="c:\Users\user\Downloads\bncana alm.jpeg" class="card-img-top" alt="Program Bantuan Bencana">
+                        <div class="card-body">
+                            <h5 class="card-title">Bantuan Bencana Alam</h5>
+                            <p class="card-text">Respons cepat dan bantuan kemanusiaan untuk korban bencana alam.</p>
+                            <div class="product-detail">
+                                <p><strong>Deskripsi Lebih Lanjut:</strong> Membantu kebutuhan pokok seperti makanan, pakaian, tempat tinggal sementara, serta upaya pemulihan pasca bencana.</p>
+                                <a href="#donasi" class="btn btn-sm">Donasi Sekarang <i class="fas fa-arrow-right ms-2"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tentang-kami" class="container">
+            <h1 class="mb-5">Tentang Lembaga Kami Peduli</h1>
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <p>Lembaga Donasi Kita adalah organisasi nirlaba yang berdedikasi untuk menciptakan kebahagiaan di masyarakat. Kami percaya bahwa setiap individu berhak mendapatkan kesempatan yang lebih baik dalam hidup, dan melalui program-program kami, kami berupaya membantu bagi mereka yang membutuhkan.</p>
+                    <p>Kami memastikan bahwa setiap donasi yang Anda berikan dimanfaatkan secara optimal untuk mencapai tujuan mulia kami. Misi kami adalah meningkatkan akses pendidikan, kesehatan, dan kesejahteraan, serta memberikan bantuan cepat dalam situasi darurat.</p>
+                    <p class="text-center mt-4">Bergabunglah dengan kami dalam misi mulia ini. Setiap kontribusi, sekecil apapun, dapat membuat perbedaan besar dalam kehidupan seseorang.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="program" class="container">
+            <h1 class="mb-5">Daftar Program Kami</h1>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nama Program</th>
+                            <th scope="col">Deskripsi Singkat</th>
+                            <th scope="col">Target Donasi</th>
+                            <th scope="col">Terkumpul</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Beasiswa Pendidikan Anak Bangsa</td>
+                            <td>Mendukung pendidikan anak-anak kurang mampu.</td>
+                            <td>Rp 50.000.000</td>
+                            <td>Rp 35.000.000</td>
+                            <td><span class="badge bg-primary" style="background-color: var(--pastel-primary) !important; color: var(--pastel-dark);">Berjalan</span></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Ambulans Gratis</td>
+                            <td>Penyediaan layanan ambulans gratis bagi masyarakat.</td>
+                            <td>Rp 100.000.000</td>
+                            <td>Rp 80.000.000</td>
+                            <td><span class="badge bg-primary" style="background-color: var(--pastel-primary) !important; color: var(--pastel-dark);">Berjalan</span></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Bantuan Pangan Korban Banjir</td>
+                            <td>Distribusi kebutuhan pokok bagi korban banjir.</td>
+                            <td>Rp 20.000.000</td>
+                            <td>Rp 20.000.000</td>
+                            <td><span class="badge bg-success" style="background-color: var(--pastel-accent) !important; color: var(--pastel-dark);">Selesai</span></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td>Program Air Bersih Desa Terpencil</td>
+                            <td>Membagikan air bersih di desa-desa terpencil.</td>
+                            <td>Rp 75.000.000</td>
+                            <td>Rp 15.000.000</td>
+                            <td><span class="badge bg-primary" style="background-color: var(--pastel-primary) !important; color: var(--pastel-dark);">Berjalan</span></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">5</th>
+                            <td>Pelatihan Keterampilan Pemuda</td>
+                            <td>Memberikan pelatihan keterampilan untuk meningkatkan kemandirian.</td>
+                            <td>Rp 40.000.000</td>
+                            <td>Rp 25.000.000</td>
+                            <td><span class="badge bg-primary" style="background-color: var(--pastel-primary) !important; color: var(--pastel-dark);">Berjalan</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="donasi" class="container">
+            <h1 class="mb-5">Form Donasi</h1>
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <form id="donationForm">
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label"><i class="fas fa-user me-2"></i>Nama Lengkap</label>
+                            <input type="text" class="form-control" id="fullName" name="fullName" minlength="5" maxlength="20" required placeholder="Masukkan nama lengkap Anda">
+                            <div class="invalid-feedback" id="fullNameError">
+                                Nama harus antara 5 hingga 20 karakter.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label"><i class="fas fa-envelope me-2"></i>Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required placeholder="name@example.com">
+                            <div class="invalid-feedback" id="emailError">
+                                Masukkan format email yang valid.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="form-label"><i class="fas fa-money-bill-wave me-2"></i>Jumlah Donasi (Rp)</label>
+                            <input type="number" class="form-control" id="amount" name="amount" min="10000" required placeholder="Minimal Rp 10.000">
+                            <div class="invalid-feedback" id="amountError">
+                                Jumlah donasi minimal Rp 10.000.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label"><i class="fas fa-comment-dots me-2"></i>Pesan (Opsional)</label>
+                            <textarea class="form-control" id="message" name="message" rows="3" maxlength="100" placeholder="Sampaikan pesan atau harapan Anda..."></textarea>
+                            <div class="form-text">Maksimal 100 karakter.</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-hand-holding-usd me-2"></i>Kirim Donasi</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="kontak" class="container">
+            <h1 class="mb-5">Hubungi Kami</h1>
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <form id="contactForm">
+                        <div class="mb-3">
+                            <label for="contactName" class="form-label"><i class="fas fa-user me-2"></i>Nama Anda</label>
+                            <input type="text" class="form-control" id="contactName" required placeholder="Nama Lengkap Anda">
+                        </div>
+                        <div class="mb-3">
+                            <label for="contactEmail" class="form-label"><i class="fas fa-envelope me-2"></i>Email Anda</label>
+                            <input type="email" class="form-control" id="contactEmail" required placeholder="Email Anda">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label"><i class="fas fa-lock me-2"></i>Buat Password (Untuk Akun Pengguna)</label>
+                            <input type="password" class="form-control" id="password" required placeholder="Minimal 8 karakter, huruf besar, kecil, angka">
+                            <div class="invalid-feedback" id="passwordError">
+                                Password harus minimal 8 karakter, mengandung huruf besar, huruf kecil, dan angka.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="messageSubject" class="form-label"><i class="fas fa-tag me-2"></i>Subjek Pesan</label>
+                            <input type="text" class="form-control" id="messageSubject" required placeholder="Misalnya: Pertanyaan Donasi / Kerjasama">
+                        </div>
+                        <div class="mb-3">
+                            <label for="contactMessage" class="form-label"><i class="fas fa-comment-alt me-2"></i>Pesan Anda</label>
+                            <textarea class="form-control" id="contactMessage" rows="5" required placeholder="Tuliskan pesan Anda di sini..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-paper-plane me-2"></i>Kirim Pesan</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-4" style="background-color: var(--pastel-dark) !important;">
+        <p class="mb-0">&copy; 2025 Lembaga Donasi Kita. Semua Hak Dilindungi.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            window.addEventListener('load', function() {
+                setTimeout(() => {
+                    loadingOverlay.classList.add('hidden');
+                }, 700); 
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                    const offsetTop = targetElement.offsetTop - navbarHeight;
+
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+
+                    if (window.innerWidth < 992) { 
+                        const navbarToggler = document.querySelector('.navbar-toggler');
+                        const navbarCollapse = document.querySelector('#navbarNav');
+                        if (navbarCollapse.classList.contains('show')) {
+                            navbarToggler.click();
+                        }
+                    }
+                });
+            });
+
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            const navbarHeight = document.querySelector('.navbar').offsetHeight;
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - navbarHeight; 
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            const donationForm = document.getElementById('donationForm');
+            if (donationForm) {
+                const fullNameInput = document.getElementById('fullName');
+                const emailInput = document.getElementById('email');
+                const amountInput = document.getElementById('amount');
+
+                donationForm.addEventListener('submit', function(event) {
+                    let formIsValid = true;
+
+                    validateFullName(fullNameInput);
+                    validateEmail(emailInput);
+                    validateAmount(amountInput);
+
+                    if (fullNameInput.classList.contains('is-invalid') ||
+                        emailInput.classList.contains('is-invalid') ||
+                        amountInput.classList.contains('is-invalid')) {
+                        formIsValid = false;
+                    }
+
+                    if (!formIsValid) {
+                        event.preventDefault();
+                        alert('Mohon periksa kembali inputan Anda. Ada kesalahan validasi.');
+                    } else {
+                        alert('Donasi Anda berhasil dikirim! Terima kasih atas kebaikan Anda.');
+                    }
+                });
+
+                fullNameInput.addEventListener('input', () => validateFullName(fullNameInput));
+                emailInput.addEventListener('input', () => validateEmail(emailInput));
+                amountInput.addEventListener('input', () => validateAmount(amountInput));
+
+                function validateFullName(input) {
+                    const name = input.value.trim();
+                    const errorElement = document.getElementById('fullNameError');
+                    if (name.length < 5 || name.length > 20) {
+                        input.classList.add('is-invalid');
+                        input.classList.remove('is-valid');
+                        errorElement.textContent = 'Nama harus antara 5 hingga 20 karakter.';
+                    } else {
+                        input.classList.remove('is-invalid');
+                        input.classList.add('is-valid');
+                        errorElement.textContent = '';
+                    }
+                }
+
+                function validateEmail(input) {
+                    const errorElement = document.getElementById('emailError');
+                    if (!input.checkValidity()) {
+                        input.classList.add('is-invalid');
+                        input.classList.remove('is-valid');
+                        errorElement.textContent = 'Masukkan format email yang valid.';
+                    } else {
+                        input.classList.remove('is-invalid');
+                        input.classList.add('is-valid');
+                        errorElement.textContent = '';
+                    }
+                }
+
+                function validateAmount(input) {
+                    const amount = parseInt(input.value);
+                    const errorElement = document.getElementById('amountError');
+                    if (isNaN(amount) || amount < 10000) {
+                        input.classList.add('is-invalid');
+                        input.classList.remove('is-valid');
+                        errorElement.textContent = 'Jumlah donasi minimal Rp 10.000.';
+                    } else {
+                        input.classList.remove('is-invalid');
+                        input.classList.add('is-valid');
+                        errorElement.textContent = '';
+                    }
+                }
+            }
+
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                const passwordInput = document.getElementById('password');
+
+                contactForm.addEventListener('submit', function(event) {
+                    let formIsValid = true;
+
+                    validatePassword(passwordInput);
+
+                    contactForm.querySelectorAll('input[required], textarea[required]').forEach(input => {
+                        if (input.id !== 'password') { 
+                            if (!input.checkValidity()) {
+                                formIsValid = false;
+                                input.classList.add('is-invalid');
+                            } else {
+                                input.classList.remove('is-invalid');
+                            }
+                        }
+                    });
+
+                    if (passwordInput.classList.contains('is-invalid')) {
+                        formIsValid = false;
+                    }
+
+                    if (!formIsValid) {
+                        event.preventDefault(); 
+                        alert('Mohon periksa kembali inputan Anda. Ada kesalahan validasi.');
+                    } else {
+                        alert('Pesan Anda berhasil dikirim! Kami akan segera menghubungi Anda.');
+                    }
+                });
+
+                passwordInput.addEventListener('input', () => validatePassword(passwordInput));
+
+                function validatePassword(input) {
+                    const password = input.value;
+                    const errorElement = document.getElementById('passwordError');
+                    let isValid = true;
+                    let errorMessage = '';
+
+                    if (password.length < 8) {
+                        errorMessage += 'Minimal 8 karakter. ';
+                        isValid = false;
+                    }
+                    if (!/[A-Z]/.test(password)) {
+                        errorMessage += 'Harus mengandung huruf besar. ';
+                        isValid = false;
+                    }
+                    if (!/[a-z]/.test(password)) {
+                        errorMessage += 'Harus mengandung huruf kecil. ';
+                        isValid = false;
+                    }
+                    if (!/[0-9]/.test(password)) {
+                        errorMessage += 'Harus mengandung angka. ';
+                        isValid = false;
+                    }
+
+                    if (isValid) {
+                        input.classList.remove('is-invalid');
+                        input.classList.add('is-valid');
+                        errorElement.textContent = '';
+                    } else {
+                        input.classList.add('is-invalid');
+                        input.classList.remove('is-valid');
+                        errorElement.textContent = errorMessage.trim();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

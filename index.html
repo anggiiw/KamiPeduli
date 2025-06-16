@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lembaga Kami Peduli - Beranda</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loading-overlay">
+        <div class="spinner-container">
+            <i class="fas fa-hand-holding-heart spinner-logo"></i>
+            <div class="spinner-border-custom" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#beranda">
+                <i class="fas fa-hand-holding-heart me-2"></i>Kami Peduli
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#beranda">Beranda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">Tentang Kami</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="program.html">Program</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="donasi.html">Donasi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Kontak</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-5">
+        <section id="beranda" class="container-fluid">
+            <h1 class="mb-5">Selamat Datang di Kami Peduli</h1>
+            <div id="imageSlider" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="c:\Users\user\Downloads\bersatu bergerak.jfif" class="d-block w-100" alt="Bantu Sesama">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Bantu Mereka yang Membutuhkan</h5>
+                            <p>Mari bersama-sama menciptakan perubahan positif melalui donasi Anda.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="c:\Users\user\Downloads\harapan baru.jpg" class="d-block w-100" alt="Harapan Baru">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Edukasi untuk Masa Depan</h5>
+                            <p>Dukungan Anda sangat berarti untuk generasi penerus bangsa.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="c:\Users\user\Downloads\bantuan-air-bersih-pwi.jpg" class="d-block w-100" alt="Bersatu Bergerak">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Air Bersih untuk Semua</h5>
+                            <p>Setiap tetes air bersih adalah harapan bagi komunitas terpencil.</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#imageSlider" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#imageSlider" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </section>
+
+        <section class="container">
+            <h2 class="mb-5">Program Unggulan Kami</h2>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 justify-content-center">
+                <div class="col">
+                    <div class="card product-card">
+                        <img src="c:\Users\user\Downloads\pendidikan.webp" class="card-img-top" alt="Program Pendidikan">
+                        <div class="card-body">
+                            <h5 class="card-title">Donasi Pendidikan</h5>
+                            <p class="card-text">Dukungan untuk pendidikan anak-anak kurang mampu, membuka gerbang masa depan.</p>
+                            <div class="product-detail">
+                                <p><strong>Deskripsi Lebih Lanjut:</strong> Donasi ini akan digunakan untuk beasiswa, penyediaan buku, alat tulis, dan perbaikan fasilitas belajar di daerah terpencil.</p>
+                                <a href="donasi.html" class="btn btn-sm">Donasi Sekarang <i class="fas fa-arrow-right ms-2"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card product-card">
+                        <img src="c:\Users\user\Downloads\kesehatan.jpg" class="card-img-top" alt="Program Kesehatan">
+                        <div class="card-body">
+                            <h5 class="card-title">Donasi Kesehatan</h5>
+                            <p class="card-text">Membantu penyediaan layanan kesehatan gratis bagi mereka yang membutuhkan.</p>
+                            <div class="product-detail">
+                                <p><strong>Deskripsi Lebih Lanjut:</strong> Dana digunakan untuk pengadaan obat-obatan esensial, pemeriksaan kesehatan gratis, dan bantuan operasi darurat.</p>
+                                <a href="donasi.html" class="btn btn-sm">Donasi Sekarang <i class="fas fa-arrow-right ms-2"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card product-card">
+                        <img src="c:\Users\user\Downloads\bncana alm.jpeg" class="card-img-top" alt="Program Bantuan Bencana">
+                        <div class="card-body">
+                            <h5 class="card-title">Bantuan Bencana Alam</h5>
+                            <p class="card-text">Respons cepat dan bantuan kemanusiaan untuk korban bencana alam.</p>
+                            <div class="product-detail">
+                                <p><strong>Deskripsi Lebih Lanjut:</strong> Membantu kebutuhan pokok seperti makanan, pakaian, tempat tinggal sementara, serta upaya pemulihan pasca bencana.</p>
+                                <a href="donasi.html" class="btn btn-sm">Donasi Sekarang <i class="fas fa-arrow-right ms-2"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-4" style="background-color: var(--pastel-dark) !important;">
+        <p class="mb-0">&copy; 2025 Lembaga Kami Peduli. Semua Hak Dilindungi.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
